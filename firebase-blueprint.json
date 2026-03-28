@@ -1,0 +1,77 @@
+{
+  "entities": {
+    "Session": {
+      "title": "Game Session",
+      "description": "Real-time state of a player's game session.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "riddleNum": { "type": "integer" },
+        "riddleDiff": { "type": "string" },
+        "lives": { "type": "integer" },
+        "progress": { "type": "integer" },
+        "gameMode": { "type": "string" },
+        "updatedAt": { "type": "integer" }
+      },
+      "required": ["userId", "riddleNum", "lives", "updatedAt"]
+    },
+    "Guess": {
+      "title": "Player Guess",
+      "description": "A log of a single guess attempt.",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string" },
+        "type": { "type": "string", "enum": ["correct", "wrong", "info"] },
+        "riddleNum": { "type": "integer" },
+        "diff": { "type": "string" },
+        "guess": { "type": "string" },
+        "ts": { "type": "integer" }
+      },
+      "required": ["sessionId", "type", "riddleNum", "ts"]
+    },
+    "LeaderboardEntry": {
+      "title": "Leaderboard Entry",
+      "description": "A completed game entry for the leaderboard.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "lives": { "type": "integer" },
+        "time": { "type": "integer" },
+        "mode": { "type": "string" },
+        "pack": { "type": "string" },
+        "date": { "type": "integer" }
+      },
+      "required": ["name", "lives", "time", "date"]
+    },
+    "Command": {
+      "title": "Admin Command",
+      "description": "A remote command sent from the admin to a session.",
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["grant_life", "jump_riddle", "unlock_hint"] },
+        "lives": { "type": "integer" },
+        "riddle": { "type": "integer" },
+        "ts": { "type": "integer" }
+      },
+      "required": ["type", "ts"]
+    }
+  },
+  "firestore": {
+    "/sessions/{sessionId}": {
+      "schema": "Session",
+      "description": "Active game sessions."
+    },
+    "/sessions/{sessionId}/guesses/{guessId}": {
+      "schema": "Guess",
+      "description": "Guesses for a specific session."
+    },
+    "/leaderboard/{entryId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Global leaderboard entries."
+    },
+    "/commands/{sessionId}": {
+      "schema": "Command",
+      "description": "Remote commands for a session."
+    }
+  }
+}

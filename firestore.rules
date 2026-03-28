@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: sessions
+    // Fields: userId, riddleNum, riddleDiff, lives, progress, gameMode, updatedAt
+    //
+    // Collection: sessions/{sessionId}/guesses
+    // Fields: sessionId, type, riddleNum, diff, guess, ts
+    //
+    // Collection: leaderboard
+    // Fields: name, lives, time, mode, pack, date
+    //
+    // Collection: commands
+    // Fields: type, lives, riddle, ts
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "onlyvalorant28@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Sessions: Anyone can create a session (anonymous or logged in), 
+    // but only the owner or admin can update/read.
+    // For this app, we'll allow public creation but restricted access.
+    match /sessions/{sessionId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow create: if true; // Allow initial session creation
+      allow update: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      
+      match /guesses/{guessId} {
+        allow read: if isAdmin() || (isAuthenticated() && get(/databases/$(database)/documents/sessions/$(sessionId)).data.userId == request.auth.uid);
+        allow create: if true;
+      }
+    }
+
+    // Leaderboard: Publicly readable, but only authenticated users can create.
+    match /leaderboard/{entryId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+
+    // Commands: Only admin can create/update, session owner can read.
+    match /commands/{sessionId} {
+      allow read: if isAdmin() || (isAuthenticated() && get(/databases/$(database)/documents/sessions/$(sessionId)).data.userId == request.auth.uid);
+      allow write: if isAdmin();
+    }
+  }
+}

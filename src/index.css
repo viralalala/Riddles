@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Space+Grotesk:wght@300;400;700&family=Dancing+Script:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-cursive: "Dancing Script", cursive;
+  
+  --color-bg: #000000;
+  --color-surface: #0a0a0a;
+  --color-accent: #a855f7;
+  --color-accent-light: #c084fc;
+  --color-muted: #64748b;
+  --color-wrong: #ef4444;
+  --color-correct: #22c55e;
+  --color-purple: #9333ea;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white font-sans font-light min-h-screen overflow-x-hidden selection:bg-purple-500/30;
+    background-color: var(--color-bg);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+}
+
+@layer components {
+  .cursive-text {
+    font-family: var(--font-cursive);
+  }
+
+  .scene-block {
+    @apply bg-surface/40 border border-white/5 rounded-xl p-5 mb-4 backdrop-blur-sm;
+  }
+  .scene-label {
+    @apply text-[10px] tracking-[0.2em] uppercase text-accent font-medium mb-2;
+  }
+  .scene-text {
+    @apply font-display text-lg leading-relaxed text-white/90;
+  }
+  .evidence-item {
+    @apply flex items-start gap-3 p-3 bg-white/5 border border-white/5 rounded-lg text-sm leading-relaxed mb-2;
+  }
+  .evidence-item::before {
+    content: '◆';
+    @apply text-accent text-[8px] mt-1 flex-shrink-0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse-soft {
+  @apply animate-[pulse-soft_2s_cubic-bezier(0.4,0,0.6,1)_infinite];
+}
