@@ -170,170 +170,192 @@ export const RIDDLES_CLASSIC: Riddle[] = [
 
 export const RIDDLES_HORROR: Riddle[] = [
   {
-    id: 1,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Silent Witness</div>
-      <p class="scene-text">A man is found dead in his study. He was stabbed in the back while sitting at his desk. On the desk is a calendar with the numbers 6, 4, 9, 10, 11 written in blood. The suspects are his wife (Mary), his business partner (John), his lawyer (Paul), and his chef (Jason).</p>
-    </div>`,
-    question: "Who killed him?",
-    answers: ["jason"],
-    hint: "The numbers correspond to the months of the year.",
-    explain: "6=June, 4=April, 9=September, 10=October, 11=November. The first letters spell JASON."
+    "id": 1,
+    "diff": "Extreme",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Architect's Demise</div>\n      <p class=\"scene-text\">An architect was found dead in his newly designed, perfectly soundproof, windowless vault. The heavy steel door was locked from the inside. There are no secret passages. He died of asphyxiation, but the room has enough air to last a week, and he was only in there for an hour. The only things in the room are his body, a broken hourglass, and a large block of dry ice.</p>\n      <ul class=\"clues-list\">\n        <li>The room was completely sealed.</li>\n        <li>Dry ice sublimates into gas.</li>\n        <li>The gas is heavier than air and displaces oxygen.</li>\n      </ul>\n    </div>",
+    "question": "How did the architect die without using up the room's oxygen, and why was the door locked from the inside?",
+    "answers": [
+      "dry ice",
+      "carbon dioxide",
+      "co2",
+      "suffocated by dry ice",
+      "sublimation"
+    ],
+    "hint": "What happens to dry ice when it melts in a sealed room?",
+    "explain": "The architect brought a large block of dry ice into the sealed vault. As it sublimated, it rapidly filled the room with carbon dioxide, displacing the breathable oxygen and causing asphyxiation. He locked the door himself before the effects took hold."
   },
   {
-    id: 2,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Frozen Room</div>
-      <p class="scene-text">A man is found dead in a room with no windows and a door locked from the inside. He is hanging from the ceiling. The only thing in the room is a large puddle of water beneath him. There are no chairs, tables, or ladders.</p>
-    </div>`,
-    question: "How did he die?",
-    answers: ["ice", "block of ice", "he stood on ice"],
-    hint: "The puddle wasn't there when he entered the room.",
-    explain: "He stood on a block of ice to hang himself, and it melted away."
+    "id": 2,
+    "diff": "Extreme",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Poisoned Chalice</div>\n      <p class=\"scene-text\">Two explorers find a tomb. They drink from the same cursed chalice, filled with the same wine. One dies instantly, the other lives. The survivor didn't take an antidote and the poison was definitely in the wine.</p>\n      <ul class=\"clues-list\">\n        <li>The poison was in the ice cubes.</li>\n        <li>The survivor drank quickly.</li>\n        <li>The victim drank slowly.</li>\n      </ul>\n    </div>",
+    "question": "Why did only one explorer die if they drank the exact same poisoned wine?",
+    "answers": [
+      "ice",
+      "ice cubes",
+      "the ice",
+      "poison was in the ice",
+      "ice melted"
+    ],
+    "hint": "Temperature and time play a crucial role in the poisoning.",
+    "explain": "The poison was frozen inside the ice cubes. The survivor drank their wine quickly before the ice could melt. The victim drank slowly, allowing the poisoned ice to melt into the wine."
   },
   {
-    id: 3,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Midnight Call</div>
-      <p class="scene-text">You receive a call at 3 AM. A voice says, 'I am in your house.' You check all the doors and windows; they are locked. You check the security cameras; no one is there. You go to your bedroom and look in the mirror. You see the man standing behind you, but when you turn around, the room is empty.</p>
-    </div>`,
-    question: "Where is he?",
-    answers: ["inside the mirror", "the mirror", "behind the glass"],
-    hint: "The mirror isn't showing a reflection of your room.",
-    explain: "The 'man' is an entity trapped within or manifesting through the mirror itself."
+    "id": 3,
+    "diff": "Mind-Bending",
+    "diffClass": "extreme",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Midnight Caller</div>\n      <p class=\"scene-text\">A woman lives alone in a remote cabin. One night, she hears a knock. She looks through the peephole and sees a stranger. She immediately calls the police and says, 'There is a murderer at my door.' She has never seen this person before, and they are holding no weapons.</p>\n      <ul class=\"clues-list\">\n        <li>The cabin is in a region with heavy snow.</li>\n        <li>The stranger is facing the door.</li>\n        <li>The peephole has a wide-angle lens.</li>\n      </ul>\n    </div>",
+    "question": "How did she know with absolute certainty that the stranger was a murderer?",
+    "answers": [
+      "footprints",
+      "no footprints",
+      "tracks",
+      "no tracks in the snow",
+      "no footprints in the snow"
+    ],
+    "hint": "Look closely at the ground around the stranger through the wide-angle peephole.",
+    "explain": "It had been snowing heavily. Through the wide-angle peephole, she could see the ground around the stranger, but there were no footprints leading up to the door. The person had been waiting there since before the snow started falling, lying in wait."
   },
   {
-    id: 4,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Last Meal</div>
-      <p class="scene-text">A death row inmate is offered a final meal. He asks for a fruit that has its seeds on the outside. After eating it, he dies instantly, before his execution. The guards are confused because the fruit wasn't poisoned.</p>
-    </div>`,
-    question: "What did he eat?",
-    answers: ["strawberry", "a strawberry"],
-    hint: "It's a common red fruit.",
-    explain: "He was severely allergic to strawberries."
+    "id": 4,
+    "diff": "Hard",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Silent Witness</div>\n      <p class=\"scene-text\">A wealthy man is murdered in his study on a Sunday afternoon. The police question the staff. The butler says he was polishing silver. The maid says she was getting the mail. The chef says he was preparing dinner. The gardener says he was planting seeds.</p>\n      <ul class=\"clues-list\">\n        <li>It was a Sunday.</li>\n        <li>Mail delivery schedules.</li>\n        <li>Alibis must be airtight.</li>\n      </ul>\n    </div>",
+    "question": "Who is the murderer and why?",
+    "answers": [
+      "maid",
+      "the maid",
+      "maid getting mail",
+      "no mail on sunday"
+    ],
+    "hint": "Pay attention to the day of the week and the alibis provided.",
+    "explain": "The maid is the murderer. She claimed to be getting the mail, but there is no mail delivery on Sundays."
   },
   {
-    id: 5,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Shadow Play</div>
-      <p class="scene-text">You are in a dark room with a single candle. You see your shadow on the wall. Suddenly, your shadow starts moving independently of you. it reaches out and grabs a knife from a nearby table. You feel a sharp pain in your chest.</p>
-    </div>`,
-    question: "What is the shadow?",
-    answers: ["a demon", "an entity", "your soul", "death"],
-    hint: "It's a part of you that has turned against you.",
-    explain: "Your own shadow has become a separate, malevolent entity."
+    "id": 5,
+    "diff": "Extreme",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Bloodless Corpse</div>\n      <p class=\"scene-text\">A man is found dead in a snowy field. There are no footprints around him, no weapon, and no signs of a struggle. He has a single, small puncture wound on his back, but there is absolutely no blood on his clothes or the snow.</p>\n      <ul class=\"clues-list\">\n        <li>The puncture wound is deep.</li>\n        <li>The surrounding temperature is well below freezing.</li>\n        <li>The weapon melted.</li>\n      </ul>\n    </div>",
+    "question": "What was the murder weapon?",
+    "answers": [
+      "icicle",
+      "an icicle",
+      "ice shard",
+      "ice dagger",
+      "ice"
+    ],
+    "hint": "The weapon left no trace because of the environment.",
+    "explain": "The man was stabbed with an icicle. The cold temperature prevented immediate heavy bleeding externally, and the weapon melted away, leaving no trace."
   },
   {
-    id: 6,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Echo Chamber</div>
-      <p class="scene-text">You shout into a deep well: 'Is anyone there?' An echo replies: 'Is anyone there?' You shout: 'Help me!' The echo replies: 'No one can help you now.'</p>
-    </div>`,
-    question: "What is in the well?",
-    answers: ["not an echo", "a mimic", "something alive", "a monster"],
-    hint: "An echo only repeats what it hears.",
-    explain: "The response was not an echo, but something mimicking your voice and responding with its own words."
+    "id": 6,
+    "diff": "Mind-Bending",
+    "diffClass": "labyrinth",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Final Message</div>\n      <p class=\"scene-text\">A man is murdered in his office. Before he dies, he writes a series of numbers on the calendar in his own blood: 6, 4, 9, 10, 11. The suspects are Jason, Shirley, Mark, John, and November.</p>\n      <ul class=\"clues-list\">\n        <li>The numbers correspond to months.</li>\n        <li>Look at the first letters.</li>\n        <li>The calendar is the key.</li>\n      </ul>\n    </div>",
+    "question": "Who is the killer?",
+    "answers": [
+      "jason",
+      "jason is the killer"
+    ],
+    "hint": "What are the 6th, 4th, 9th, 10th, and 11th months of the year?",
+    "explain": "The 6th, 4th, 9th, 10th, and 11th months are June, April, September, October, and November. The first letters spell J-A-S-O-N."
   },
   {
-    id: 7,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Red Room</div>
-      <p class="scene-text">A man is found dead in a room where everything is red: the walls, the floor, the ceiling, the furniture. He died of blood loss, but there is no blood anywhere in the room except for a small drop on his finger.</p>
-    </div>`,
-    question: "How did he die?",
-    answers: ["he was a mosquito", "mosquito", "insect"],
-    hint: "The perspective is not human.",
-    explain: "The 'man' was actually a mosquito that had gorged itself on blood and was crushed."
+    "id": 7,
+    "diff": "Extreme",
+    "diffClass": "extreme",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Blind Man's Bluff</div>\n      <p class=\"scene-text\">A blind man is stranded on a desert island with two pills: one red, one blue. He must take exactly one of each to survive a deadly disease. If he takes two of the same color, he dies. He drops both pills on the sand, and they mix with two identical pills he dropped earlier (one red, one blue). Now he has four identical-feeling pills in front of him: two red, two blue.</p>\n      <ul class=\"clues-list\">\n        <li>He cannot see the colors.</li>\n        <li>He must consume exactly one red and one blue equivalent.</li>\n        <li>The pills can be broken.</li>\n      </ul>\n    </div>",
+    "question": "How does he ensure he takes exactly one red and one blue pill?",
+    "answers": [
+      "cut them in half",
+      "break them in half",
+      "halve them",
+      "split them",
+      "take half of each"
+    ],
+    "hint": "He doesn't need to know which is which, he just needs an equal amount of each.",
+    "explain": "He breaks each of the four pills exactly in half and takes one half from each pill. This guarantees he consumes the equivalent of one full red pill and one full blue pill."
   },
   {
-    id: 8,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Locked Box</div>
-      <p class="scene-text">You find a box that says: 'Do not open.' You open it anyway. Inside is a smaller box that says: 'I warned you.' You open that one, and inside is a mirror. You look into the mirror and see yourself, but your eyes are missing.</p>
-    </div>`,
-    question: "What was in the box?",
-    answers: ["your sight", "your eyes", "a curse"],
-    hint: "The box took something from you the moment you looked.",
-    explain: "The box contained a curse that physically or spiritually removed your eyes."
+    "id": 8,
+    "diff": "Hard",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Lighthouse Keeper</div>\n      <p class=\"scene-text\">A man turns off the light and goes to sleep. The next morning, he wakes up, looks out the window, and screams in horror. He realizes he has caused the deaths of hundreds of people.</p>\n      <ul class=\"clues-list\">\n        <li>The light was crucial for others.</li>\n        <li>He lives near the ocean.</li>\n        <li>The deaths happened at night.</li>\n      </ul>\n    </div>",
+    "question": "Why did turning off the light cause such a tragedy?",
+    "answers": [
+      "he lived in a lighthouse",
+      "it was a lighthouse",
+      "ships crashed",
+      "boat crash",
+      "lighthouse keeper"
+    ],
+    "hint": "Where does he live and what is the light used for?",
+    "explain": "He is a lighthouse keeper. By turning off the light, he removed the warning signal for ships, causing a massive shipwreck on the rocks during the night."
   },
   {
-    id: 9,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Whispering Woods</div>
-      <p class="scene-text">You are lost in a forest. Every tree you pass has your name carved into it. You hear a voice whispering: 'You've been here before. You'll be here forever.' You find a clearing with a single grave. The headstone has your name and today's date on it.</p>
-    </div>`,
-    question: "Where are you?",
-    answers: ["purgatory", "hell", "a loop", "dead"],
-    hint: "The date is the key.",
-    explain: "You are trapped in a time loop or a state of purgatory where you relive your death."
+    "id": 9,
+    "diff": "Extreme",
+    "diffClass": "labyrinth",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Cabin in the Woods</div>\n      <p class=\"scene-text\">You are fleeing a killer and lock yourself inside an abandoned cabin. The cabin has no windows, only one solid iron door. The killer cannot break in. You have no phone, no weapons, and no way to signal for help. After three days, the police find you dead inside, but the door is still locked from the inside, and the killer never entered.</p>\n      <ul class=\"clues-list\">\n        <li>The killer did not touch you.</li>\n        <li>You were trapped for three days.</li>\n        <li>Human biology is the cause of death.</li>\n      </ul>\n    </div>",
+    "question": "How did you die?",
+    "answers": [
+      "starvation",
+      "dehydration",
+      "thirst",
+      "lack of water",
+      "died of thirst"
+    ],
+    "hint": "What do you need to survive for three days?",
+    "explain": "You died of dehydration. While the cabin protected you from the killer, it had no water supply, and a human can only survive about three days without water."
   },
   {
-    id: 10,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Static Man</div>
-      <p class="scene-text">You see a man made of television static standing in your hallway. He points at you, and your vision starts to flicker. You try to scream, but only static comes out of your mouth. You realize your hands are starting to turn into static too.</p>
-    </div>`,
-    question: "What is happening?",
-    answers: ["you are being erased", "erasure", "digitization", "becoming static"],
-    hint: "You are losing your physical form.",
-    explain: "The entity is consuming your reality and turning you into static."
+    "id": 10,
+    "diff": "Mind-Bending",
+    "diffClass": "extreme",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Two Doors</div>\n      <p class=\"scene-text\">You are trapped in a dungeon with two doors. One leads to freedom, the other to a gruesome death. Two guards stand before the doors. One always tells the truth, the other always lies. You don't know which is which, or which door leads where. You can ask only one question to one guard.</p>\n      <ul class=\"clues-list\">\n        <li>You must ask a question that involves both guards.</li>\n        <li>The answer must be a lie regardless of who you ask.</li>\n        <li>Use their traits against them.</li>\n      </ul>\n    </div>",
+    "question": "What question do you ask to find the door to freedom?",
+    "answers": [
+      "what would the other guard say",
+      "which door would the other guard point to",
+      "ask the other guard"
+    ],
+    "hint": "You need a question whose answer will be a lie, regardless of who you ask.",
+    "explain": "You ask either guard: 'If I asked the other guard which door leads to freedom, what would they say?' Both guards will point to the door of death. You then choose the opposite door."
   },
   {
-    id: 11,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Empty Cradle</div>
-      <p class="scene-text">You hear a baby crying in the attic. You go up to check, but the attic is empty. You see an old cradle rocking back and forth. You stop the cradle, but the crying gets louder. You look inside the cradle and see a note that says: 'I'm still here, Mother.'</p>
-    </div>`,
-    question: "Who is crying?",
-    answers: ["a ghost baby", "a spirit", "the deceased", "ghost"],
-    hint: "The note implies a past tragedy.",
-    explain: "The spirit of a deceased child is haunting the house."
+    "id": 11,
+    "diff": "Extreme",
+    "diffClass": "murder",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Mirror's Reflection</div>\n      <p class=\"scene-text\">A woman buys an antique mirror. Every night at exactly 3:33 AM, she wakes up to see a dark figure standing behind her in the mirror's reflection. When she turns around, the room is empty. She covers the mirror, but the next night, the cover is on the floor, and the figure is closer.</p>\n      <ul class=\"clues-list\">\n        <li>The figure is not a ghost.</li>\n        <li>The cover was physically moved.</li>\n        <li>The mirror is not what it seems.</li>\n      </ul>\n    </div>",
+    "question": "Why is the figure only visible in the mirror, and how is it moving the cover?",
+    "answers": [
+      "it is a window",
+      "two way mirror",
+      "two-way mirror",
+      "it is a window not a mirror",
+      "someone is behind it"
+    ],
+    "hint": "Think about what else looks like a mirror in a dark room.",
+    "explain": "It's not a mirror; it's a two-way glass window looking into a hidden room. The figure is a real person standing on the other side, and they are coming out at night to remove the cover."
   },
   {
-    id: 12,
-    diff: "Insane",
-    diffClass: "murder",
-    body: `<div class="scene-block">
-      <div class="scene-label">The Final Breath</div>
-      <p class="scene-text">You are in a room with no air. You have one minute to live. There are three doors. Behind the first is a vacuum that will suck you out into space. Behind the second is a room filled with poisonous gas. Behind the third is a room filled with water.</p>
-    </div>`,
-    question: "Which door do you choose?",
-    answers: ["third", "the third", "water", "the water"],
-    hint: "You can hold your breath in one of these.",
-    explain: "You can survive for a short time in water by holding your breath, unlike the other two which are instant death."
+    "id": 12,
+    "diff": "Hard",
+    "diffClass": "extreme",
+    "body": "<div class=\"scene-block\">\n      <div class=\"scene-label\">The Buried Alive</div>\n      <p class=\"scene-text\">A man wakes up in pitch blackness. He feels wood inches above his face and realizes he's been buried alive in a coffin. He has a lighter in his pocket. He flicked it on to assess his situation.</p>\n      <ul class=\"clues-list\">\n        <li>The coffin is airtight.</li>\n        <li>He needs to breathe.</li>\n        <li>Fire requires fuel.</li>\n      </ul>\n    </div>",
+    "question": "Why was turning on the lighter the worst mistake he could make?",
+    "answers": [
+      "uses up oxygen",
+      "burns oxygen",
+      "consumes oxygen",
+      "oxygen depletion",
+      "suffocation"
+    ],
+    "hint": "Fire needs something to burn to stay lit.",
+    "explain": "A lighter consumes oxygen to maintain its flame. In a sealed, airtight coffin with a limited air supply, burning the lighter rapidly depletes the remaining oxygen, suffocating him much faster."
   }
 ];
-
-export interface Task {
-  icon: string;
-  name: string;
-  desc: string;
-  reward: string;
-  lives?: number;
-}
 
 export const TASKS: Task[] = [
   { icon: "📸", name: "Send Viral a selfie right now", desc: "Take it immediately. No retakes. No filters. Send it.", reward: "+1 heart", lives: 1 },

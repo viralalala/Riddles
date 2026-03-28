@@ -1,24 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Space+Grotesk:wght@300;400;700&family=Dancing+Script:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-cursive: "Dancing Script", cursive;
+  --font-display: "Inter", sans-serif;
+  --font-cursive: "Cormorant Garamond", serif;
   
   --color-bg: #000000;
   --color-surface: #0a0a0a;
-  --color-accent: #a855f7;
-  --color-accent-light: #c084fc;
+  --color-accent: #ffffff;
+  --color-accent-light: #e5e5e5;
   --color-muted: #64748b;
   --color-wrong: #ef4444;
   --color-correct: #22c55e;
-  --color-purple: #9333ea;
+  --color-purple: #ffffff;
 }
 
 @layer base {
   body {
-    @apply bg-black text-white font-sans font-light min-h-screen overflow-x-hidden selection:bg-purple-500/30;
+    @apply bg-black text-white font-sans font-light min-h-screen overflow-x-hidden selection:bg-white/30;
     background-color: var(--color-bg);
   }
 
@@ -37,23 +37,24 @@
 @layer components {
   .cursive-text {
     font-family: var(--font-cursive);
+    font-style: italic;
   }
 
   .scene-block {
-    @apply bg-surface/40 border border-white/5 rounded-xl p-5 mb-4 backdrop-blur-sm;
+    @apply bg-transparent border-t border-b border-white/10 py-6 mb-8;
   }
   .scene-label {
-    @apply text-[10px] tracking-[0.2em] uppercase text-accent font-medium mb-2;
+    @apply text-[10px] tracking-[0.2em] uppercase text-white/50 font-medium mb-3;
   }
   .scene-text {
-    @apply font-display text-lg leading-relaxed text-white/90;
+    @apply font-sans text-lg leading-relaxed text-white/90 font-light;
   }
   .evidence-item {
-    @apply flex items-start gap-3 p-3 bg-white/5 border border-white/5 rounded-lg text-sm leading-relaxed mb-2;
+    @apply flex items-start gap-3 py-3 border-b border-white/5 text-sm leading-relaxed;
   }
   .evidence-item::before {
-    content: '◆';
-    @apply text-accent text-[8px] mt-1 flex-shrink-0;
+    content: '—';
+    @apply text-white/40 mt-0 flex-shrink-0;
   }
 }
 

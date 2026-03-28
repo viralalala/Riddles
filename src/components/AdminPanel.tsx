@@ -94,9 +94,13 @@ export default function AdminPanel({ isOpen, onClose, gameState, sessionId, onUp
       if (!auth.currentUser) {
         try {
           await signInWithPopup(auth, googleProvider);
-        } catch (error) {
+        } catch (error: any) {
           console.error("Admin sign in failed:", error);
-          setError('Google Sign-In required for Admin access.');
+          if (error.code === 'auth/unauthorized-domain') {
+            setError('Unauthorized domain. Use http://localhost:5173 instead of 127.0.0.1.');
+          } else {
+            setError(`Sign-In failed: ${error.message}`);
+          }
           return;
         }
       }

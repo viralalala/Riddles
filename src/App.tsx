@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Zap, Shield, Key, Trophy, Skull, Info, ChevronRight, X, Menu, Settings, Eye } from 'lucide-react';
 import { RIDDLES_CLASSIC, RIDDLES_HORROR, TASKS, HINT_TASKS, Riddle, Task } from './data/riddles';
 import { validateAnswer } from './services/gemini';
 import AdminPanel from './components/AdminPanel';
@@ -19,7 +18,7 @@ import {
   serverTimestamp,
   deleteDoc
 } from 'firebase/firestore';
-import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signInAnonymously } from 'firebase/auth';
 
 // --- CONSTANTS ---
 const LIFE_CODES: Record<string, number> = {
@@ -51,6 +50,21 @@ const NeonCursor = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  useEffect(() => {
+    let animationFrameId: number;
+    const fadePoints = () => {
+      setPoints(prev => {
+        if (prev.length > 0) {
+          return prev.slice(1);
+        }
+        return prev;
+      });
+      animationFrameId = requestAnimationFrame(fadePoints);
+    };
+    animationFrameId = requestAnimationFrame(fadePoints);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999]">
       <svg className="absolute inset-0 w-full h-full">
@@ -68,19 +82,19 @@ const NeonCursor = () => {
           points={points.map(p => `${p.x},${p.y}`).join(' ')}
           fill="none"
           stroke="url(#neonGradient)"
-          strokeWidth="4"
+          strokeWidth="6"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="opacity-90"
+          className="opacity-100"
         />
         <polyline
           points={points.map(p => `${p.x},${p.y}`).join(' ')}
           fill="none"
           stroke="white"
-          strokeWidth="1.5"
+          strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="opacity-60"
+          className="opacity-80"
         />
       </svg>
     </div>
@@ -123,13 +137,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (gameState === 'playing' && user && !sessionId) {
+    if (gameState === 'playing' && !sessionId) {
       const newSessionId = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
       setSessionId(newSessionId);
       
       const sessionRef = doc(db, 'sessions', newSessionId);
       setDoc(sessionRef, {
-        userId: user.uid,
+        userId: user ? user.uid : 'anonymous',
         riddleNum: 1,
         riddleDiff: riddles[0].diff,
         lives: 3,
@@ -137,7 +151,7 @@ export default function App() {
         gameMode: gameMode,
         pack: riddlePack,
         updatedAt: Date.now()
-      });
+      }).catch(err => console.error("Failed to create session:", err));
     }
   }, [gameState, user, sessionId, gameMode, riddlePack, riddles]);
 
@@ -201,7 +215,7 @@ export default function App() {
       diff: currentRiddle.diff,
       guess: guessText,
       ts: Date.now()
-    });
+    }).catch(err => console.error("Failed to log guess:", err));
   };
 
   // --- EFFECTS ---
@@ -218,7 +232,7 @@ export default function App() {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (gameState === 'playing' && gameMode === 'timed' && timeLeft > 0) {
+    if (gameState === 'playing' && gameMode === 'timed' && timeLeft > 0 && !showNextButton) {
       timer = setInterval(() => {
         setTimeLeft(prev => {
           if (prev <= 1) {
@@ -230,7 +244,7 @@ export default function App() {
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [gameState, gameMode, timeLeft]);
+  }, [gameState, gameMode, timeLeft, showNextButton]);
 
   const handleTimeUp = () => {
     setLives(prev => {
@@ -250,10 +264,22 @@ export default function App() {
   const startGame = async (mode: GameMode = 'normal', pack: RiddlePack = 'classic') => {
     if (!user) {
       try {
-        await signInWithPopup(auth, googleProvider);
-      } catch (error) {
-        console.error("Sign in failed:", error);
-        return;
+        await signInAnonymously(auth);
+      } catch (anonError: any) {
+        console.warn("Anonymous sign in failed, trying Google Sign-In:", anonError);
+        try {
+          await signInWithPopup(auth, googleProvider);
+        } catch (error: any) {
+          console.error("Sign in failed:", error);
+          if (error.code === 'auth/unauthorized-domain') {
+            console.warn("Sign in failed: Unauthorized domain. If you are running locally, please use http://localhost:5173 instead of 127.0.0.1.");
+          } else if (error.code === 'auth/popup-closed-by-user') {
+            console.warn("Sign in was cancelled. Continuing anonymously.");
+          } else {
+            console.warn(`Sign in failed: ${error.message}. Continuing anonymously.`);
+          }
+          // Continue without returning to allow playing without sign-in
+        }
       }
     }
     setGameMode(mode);
@@ -358,27 +384,22 @@ export default function App() {
   };
 
   const submitToLeaderboard = (name: string) => {
-    if (!name.trim() || !user) return;
+    if (!name.trim()) return;
     addDoc(collection(db, 'leaderboard'), {
       name,
       lives,
       time: Date.now(), // Simplified time for now
       mode: gameMode,
       date: Date.now(),
-      userId: user.uid
-    });
+      userId: user ? user.uid : 'anonymous'
+    }).catch(err => console.error("Failed to submit to leaderboard:", err));
   };
 
   // --- RENDER HELPERS ---
   const renderHearts = () => {
     return (
-      <div className="flex gap-1.5">
-        {[...Array(3)].map((_, i) => (
-          <Heart 
-            key={i} 
-            className={`w-4 h-4 transition-all duration-500 ${i < lives ? 'text-wrong fill-wrong' : 'text-muted/20'}`} 
-          />
-        ))}
+      <div className="flex gap-2 text-xs font-mono tracking-widest text-white/50 items-center">
+        LIVES: <span className="text-white font-bold">{lives}/3</span>
       </div>
     );
   };
@@ -440,7 +461,7 @@ export default function App() {
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <span className="relative z-10 flex items-center gap-2">
-                    ENTER THE VOID <ChevronRight className="w-5 h-5" />
+                    ENTER THE VOID <span className="text-lg">→</span>
                   </span>
                 </motion.button>
 
@@ -496,7 +517,7 @@ export default function App() {
                   <h3 className="text-2xl font-display mb-2">Classic Logic</h3>
                   <p className="text-sm text-muted leading-relaxed">12 mind-bending riddles that test your lateral thinking and pure logic. The standard gauntlet.</p>
                   <div className="mt-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-accent">
-                    Start Normal Mode <ChevronRight className="w-3 h-3" />
+                    Start Normal Mode <span className="text-sm">→</span>
                   </div>
                 </div>
               </button>
@@ -509,7 +530,7 @@ export default function App() {
                   <h3 className="text-2xl font-display mb-2">Horror Cases</h3>
                   <p className="text-sm text-muted leading-relaxed">Dark scenarios, murder mysteries, and psychological puzzles. Not for the faint of heart.</p>
                   <div className="mt-6 flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-wrong">
-                    Enter the Dark <ChevronRight className="w-3 h-3" />
+                    Enter the Dark <span className="text-sm">→</span>
                   </div>
                 </div>
               </button>
@@ -651,7 +672,7 @@ export default function App() {
                 onClick={() => setGameState('hero')}
                 className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted hover:text-white transition-colors"
               >
-                <ChevronRight className="w-3 h-3 rotate-180" />
+                <span className="text-sm">←</span>
                 Back to Home
               </button>
               <div className="text-[10px] tracking-[0.2em] uppercase text-muted font-medium">
@@ -693,7 +714,15 @@ export default function App() {
                     type="text"
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleCheckAnswer()}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        if (showNextButton) {
+                          handleNextRiddle();
+                        } else {
+                          handleCheckAnswer();
+                        }
+                      }
+                    }}
                     placeholder="Your answer..."
                     disabled={isChecking}
                     className="flex-1 bg-white/5 border border-white/10 rounded-xl p-4 text-sm outline-none focus:border-accent/40 transition-colors disabled:opacity-50"
@@ -714,7 +743,7 @@ export default function App() {
                     onClick={handleNextRiddle}
                     className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-white/90 transition-all flex items-center justify-center gap-2"
                   >
-                    Next Question <ChevronRight className="w-5 h-5" />
+                    Next Question <span className="text-lg">→</span>
                   </motion.button>
                 )}
 
@@ -740,7 +769,7 @@ export default function App() {
                     onClick={() => setShowLifelineModal(true)}
                     className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-muted hover:text-accent transition-colors"
                   >
-                    <Key className="w-3 h-3" />
+                    <span className="text-xs">[KEY]</span>
                     Hint Locked — Enter Code
                   </button>
                 ) : (
@@ -749,7 +778,7 @@ export default function App() {
                       onClick={() => setShowHint(!showHint)}
                       className="flex items-center gap-2 text-[10px] uppercase tracking-widest text-accent hover:text-accent-light transition-colors"
                     >
-                      <Info className="w-3 h-3" />
+                      <span className="text-xs">[INFO]</span>
                       {showHint ? 'Hide Hint' : 'Show Hint'}
                     </button>
                     <AnimatePresence>
@@ -781,7 +810,7 @@ export default function App() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center max-w-md"
           >
-            <Skull className="w-16 h-16 text-wrong mx-auto mb-6 animate-bounce" />
+            <div className="text-6xl text-wrong mx-auto mb-6 animate-bounce font-mono">☠</div>
             <h2 className="text-4xl font-display mb-4">No Lives Left.</h2>
             <p className="text-sm text-muted leading-relaxed mb-10">
               The riddles won this round. Complete a dare to earn a code and restore your lives.
@@ -811,7 +840,7 @@ export default function App() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center max-w-md px-4"
           >
-            <Trophy className="w-16 h-16 text-accent mx-auto mb-6 animate-pulse" />
+            <div className="text-6xl text-accent mx-auto mb-6 animate-pulse font-mono">★</div>
             <h2 className="text-4xl font-display mb-4">You Cracked It.</h2>
             <p className="text-sm text-muted leading-relaxed mb-8">
               All riddles solved. Every trap, every misdirect, every layer. You are a master of logic.
@@ -867,7 +896,7 @@ export default function App() {
                   <p className="text-[10px] text-muted uppercase tracking-widest">Enter a code from Viral</p>
                 </div>
                 <button onClick={() => setShowLifelineModal(false)} className="p-1 hover:bg-white/5 rounded-full">
-                  <X className="w-5 h-5 text-muted" />
+                  <span className="text-xl text-muted">×</span>
                 </button>
               </div>
 
@@ -944,7 +973,7 @@ export default function App() {
             onClick={() => setShowLifelineModal(true)}
             className="flex items-center gap-2 px-5 py-2.5 bg-surface border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-muted hover:text-accent hover:border-accent/40 transition-all shadow-xl"
           >
-            <Zap className="w-3 h-3" />
+            <span className="text-xs">[HINT]</span>
             Lifeline
           </button>
         </div>

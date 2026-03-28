@@ -40,7 +40,7 @@ service cloud.firestore {
     match /sessions/{sessionId} {
       allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
       allow create: if true; // Allow initial session creation
-      allow update: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow update: if true; // Allow anonymous updates
       
       match /guesses/{guessId} {
         allow read: if isAdmin() || (isAuthenticated() && get(/databases/$(database)/documents/sessions/$(sessionId)).data.userId == request.auth.uid);
@@ -48,16 +48,16 @@ service cloud.firestore {
       }
     }
 
-    // Leaderboard: Publicly readable, but only authenticated users can create.
+    // Leaderboard: Publicly readable, anyone can create.
     match /leaderboard/{entryId} {
       allow read: if true;
-      allow create: if isAuthenticated();
+      allow create: if true;
       allow update, delete: if isAdmin();
     }
 
-    // Commands: Only admin can create/update, session owner can read.
+    // Commands: Only admin can create/update, anyone with sessionId can read.
     match /commands/{sessionId} {
-      allow read: if isAdmin() || (isAuthenticated() && get(/databases/$(database)/documents/sessions/$(sessionId)).data.userId == request.auth.uid);
+      allow read: if true;
       allow write: if isAdmin();
     }
   }
